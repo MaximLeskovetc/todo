@@ -2,17 +2,19 @@ const finished = document.querySelector('.finished');
 const unfinished = document.querySelector('.unfinished');
 const addTask = document.querySelector('.add-task');
 const addBtn = addTask.querySelector('a');
+const finishedHeader = document.querySelector('.finished-header');
+let finishedHeaderEl = false;
 
 addBtn.addEventListener('click', addedTask);
 
 function addedTask(ev) {
     ev.preventDefault();
-    let input = addTask.querySelector('input');
-    let value = input.value;
+    let text = addTask.querySelector('textarea');
+    let value = text.value;
     if (value !== '') {
         render(value, unfinished)
     }
-    input.value = '';
+    text.value = '';
 }
 
 function render(value, status) {
@@ -128,9 +130,46 @@ function checkAction(ev) {
     let taskValue = label.innerText;
     task.remove();
 
+    if (finishedHeaderEl) {
+        if (finished.childNodes.length === 0) {
+            finishedHeader.innerHTML = '';
+            finishedHeaderEl = false;
+        }
+    } else {
+        renderFinishedHeader();
+        finishedHeaderEl = true;
+    }
+
     if (ev.target.checked) {
         render(taskValue, finished);
     } else {
         render(taskValue, unfinished);
     }
+}
+
+function renderFinishedHeader() {
+    let title, actionRow, listAction, firstAction, secondAction;
+
+    title = document.createElement('li');
+    actionRow = document.createElement('li');
+    firstAction = document.createElement('li');
+    secondAction = document.createElement('li');
+    listAction = document.createElement('ul');
+    title.className = 'list-group-item';
+    actionRow.className = 'list-group-item';
+    title.classList.add('active');
+    title.innerText = 'Завершёные';
+    listAction.className = 'list-inline';
+    firstAction.className = 'd-inline-block';
+    secondAction.className = 'd-inline-block';
+    firstAction.classList.add('w-25');
+    firstAction.classList.add('pl-3');
+    firstAction.innerText = 'Вернуть обратно';
+    secondAction.innerText = 'Название';
+
+    finishedHeader.appendChild(title);
+    listAction.appendChild(firstAction);
+    listAction.appendChild(secondAction);
+    actionRow.appendChild(listAction);
+    finishedHeader.appendChild(actionRow);
 }
