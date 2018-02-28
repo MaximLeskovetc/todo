@@ -39,6 +39,7 @@ function renderTask(value, status) {
     actionBlock.classList.add('w-25');
     actionBlock.classList.add('pl-3');
     titleBlock.classList.add('w-50');
+    label.className = 'name';
     label.innerText = value;
     input.type = 'checkbox';
     input.addEventListener('click', checkAction);
