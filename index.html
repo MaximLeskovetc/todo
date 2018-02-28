@@ -14,6 +14,7 @@
                 <li class="list-group-item active">
                     <ul class="list-inline">
                         <li class="d-inline-block">Добавить новое задание</li>
+                        <li class="d-inline-block w-25 pr-3 float-right">Добавить</li>
                     </ul>
                 </li>
                 <li class="list-group-item">
@@ -21,9 +22,9 @@
                         <li class="d-inline-block w-75">
                             <input class="w-100 pr-3" type="text" placeholder="Добавить новое задание">
                         </li>
-                        <li class="inline-block pl-5 w-25 float-right">
+                        <li class="inline-block pl-3 w-25 float-right">
                             <ul class="list-inline">
-                                <li class="d-inline-block"><a href="#"><i class="fa fa-floppy-o "></i></a></li>
+                                <li class="d-inline-block"><a href="#"><i class="fa fa-floppy-o"></i></a></li>
                             </ul>
                         </li>
                     </ul>
@@ -38,113 +39,19 @@
                     </ul>
                 </li>
             </ul>
-            <ul class="unfinished">
-            </ul>
+            <ul class="unfinished"></ul>
             <ul class="mt-3">
                 <li class="list-group-item active">
                     <ul class="list-inline">
                         <li class="d-inline-block w-25 pl-3">Вернуть обратно</li>
                         <li class="d-inline-block">Название</li>
-                        <li class="d-inline-block w-25 pr-3 float-right">Действие</li>
                     </ul>
                 </li>
             </ul>
-            <ul class="finished">
-                <li class="list-group-item">
-                    <ul class="list-inline">
-                        <li class="d-inline-block w-25">
-                            <label>
-                                <input class="ml-3" checked type="checkbox" name="finished">
-                            </label>
-                        </li>
-                        <li class="d-inline-block">
-                            <label>Купить пельмешек</label>
-                        </li>
-                        <li class="d-inline-block w-25 pr-3 float-right">
-                            <ul class="list-inline">
-                                <li class="d-inline-block">
-                                    <i class="fa fa-pencil"></i>
-                                </li>
-                                <li class="d-inline-block">
-                                    <i class="fa fa-floppy-o "></i>
-                                </li>
-                                <li class="d-inline-block">
-                                    <i class="fa fa-trash-o"></i>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+            <ul class="finished"></ul>
         </ul>
     </div>
 </div>
 </body>
-<script>
-    const finished = document.querySelector('.finished');
-    const unfinished = document.querySelector('.unfinished');
-    const addTask = document.querySelector('.add-task');
-    const addBtn = addTask.querySelector('a');
-    // unfinished.remove();
-    finished.remove();
-
-    addBtn.addEventListener('click', addedTask);
-
-    function addedTask(ev) {
-        ev.preventDefault();
-        let input = addTask.querySelector('input');
-        let value = input.value;
-        if (value !== '') {
-            render(value)
-        }
-        input.value = '';
-    }
-
-    function render(value) {
-        let checkedBlock, titleBlock, actionBlock, render, ul, input, label;
-        ul = document.createElement('ul');
-        input = document.createElement('input');
-        label = document.createElement('label');
-        render = document.createElement('li');
-        checkedBlock = document.createElement('li');
-        titleBlock = document.createElement('li');
-        actionBlock = document.createElement('li');
-
-        ul.className = 'list-inline';
-        render.className = 'list-group-item';
-        checkedBlock.className = 'd-inline-block';
-        checkedBlock.classList.add('w-25');
-        titleBlock.className = 'd-inline-block';
-        actionBlock.className = 'd-inline-block';
-        actionBlock.classList.add('float-right');
-        actionBlock.classList.add('w-25');
-
-        label.innerText = value;
-        input.type = 'checkbox';
-        actionBlock.innerHTML = `<ul class="list-inline">
-                                <li class="d-inline-block">
-                                    <a href="#">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                </li>
-                                <li class="d-inline-block">
-                                    <a href="#">
-                                        <i class="fa fa-floppy-o "></i>
-                                    </a>
-                                </li>
-                                <li class="d-inline-block">
-                                    <a href="#">
-                                        <i class="fa fa-trash-o"></i>
-                                    </a>
-                                </li>
-                            </ul>`;
-        ul.appendChild(checkedBlock);
-        block.appendChild(input);
-        titleBlock.appendChild(label);
-        ul.appendChild(titleBlock);
-        ul.appendChild(actionBlock);
-        render.appendChild(ul);
-        unfinished.appendChild(render);
-    }
-</script>
+<script src="/js/app.js"></script>
 </html>
