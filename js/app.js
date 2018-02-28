@@ -3,7 +3,7 @@ const unfinished = document.querySelector('.unfinished');
 const addTask = document.querySelector('.add-task');
 const addBtn = addTask.querySelector('a');
 const finishedHeader = document.querySelector('.finished-header');
-let finishedHeaderEl = false;
+let is_finishedHeader = false;
 
 addBtn.addEventListener('click', addedTask);
 
@@ -130,14 +130,14 @@ function checkAction(ev) {
     let taskValue = label.innerText;
     task.remove();
 
-    if (finishedHeaderEl) {
+    if (is_finishedHeader) {
         if (finished.childNodes.length === 0) {
             finishedHeader.innerHTML = '';
-            finishedHeaderEl = false;
+            is_finishedHeader = false;
         }
     } else {
         renderFinishedHeader();
-        finishedHeaderEl = true;
+        is_finishedHeader = true;
     }
 
     if (ev.target.checked) {
