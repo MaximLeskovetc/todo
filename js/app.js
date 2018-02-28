@@ -3,7 +3,9 @@ const unfinished = document.querySelector('.unfinished');
 const addTask = document.querySelector('.add-task');
 const addBtn = addTask.querySelector('a');
 const finishedHeader = document.querySelector('.finished-header');
+const unfinishedHeader = document.querySelector('.unfinished-header');
 let is_finishedHeader = false;
+let is_unfinishedHeader = false;
 
 addBtn.addEventListener('click', addedTask);
 
@@ -12,12 +14,13 @@ function addedTask(ev) {
     let text = addTask.querySelector('textarea');
     let value = text.value;
     if (value !== '') {
-        render(value, unfinished)
+        renderUnfinishedHeader();
+        renderTask(value, unfinished);
     }
     text.value = '';
 }
 
-function render(value, status) {
+function renderTask(value, status) {
     let checkedBlock, titleBlock, actionBlock, render, ul, input, label;
     ul = document.createElement('ul');
     input = document.createElement('input');
@@ -121,7 +124,8 @@ function editAction(ev) {
 function deleteAction(ev) {
     ev.preventDefault();
     let task = this.closest('.list-group-item');
-    task.remove()
+    task.remove();
+    removeUnfinishedHeader();
 }
 
 function checkAction(ev) {
@@ -129,47 +133,98 @@ function checkAction(ev) {
     let label = task.querySelector('label');
     let taskValue = label.innerText;
     task.remove();
-
-    if (is_finishedHeader) {
-        if (finished.childNodes.length === 0) {
-            finishedHeader.innerHTML = '';
-            is_finishedHeader = false;
-        }
-    } else {
-        renderFinishedHeader();
-        is_finishedHeader = true;
-    }
+    renderFinishedHeader();
+    renderUnfinishedHeader();
 
     if (ev.target.checked) {
-        render(taskValue, finished);
+        renderTask(taskValue, finished);
     } else {
-        render(taskValue, unfinished);
+        renderTask(taskValue, unfinished);
+    }
+}
+
+function removeFinishedHeader() {
+    if (finished.childNodes.length === 0) {
+        finishedHeader.innerHTML = '';
+        is_finishedHeader = false;
+    }
+}
+
+function removeUnfinishedHeader() {
+    if (unfinished.childNodes.length === 0) {
+        unfinishedHeader.innerHTML = '';
+        is_unfinishedHeader = false;
     }
 }
 
 function renderFinishedHeader() {
-    let title, actionRow, listAction, firstAction, secondAction;
+    if (is_finishedHeader === false) {
+        let title, actionRow, listAction, firstAction, secondAction;
 
-    title = document.createElement('li');
-    actionRow = document.createElement('li');
-    firstAction = document.createElement('li');
-    secondAction = document.createElement('li');
-    listAction = document.createElement('ul');
-    title.className = 'list-group-item';
-    actionRow.className = 'list-group-item';
-    title.classList.add('active');
-    title.innerText = 'Завершёные';
-    listAction.className = 'list-inline';
-    firstAction.className = 'd-inline-block';
-    secondAction.className = 'd-inline-block';
-    firstAction.classList.add('w-25');
-    firstAction.classList.add('pl-3');
-    firstAction.innerText = 'Вернуть обратно';
-    secondAction.innerText = 'Название';
+        title = document.createElement('li');
+        actionRow = document.createElement('li');
+        firstAction = document.createElement('li');
+        secondAction = document.createElement('li');
+        listAction = document.createElement('ul');
+        title.className = 'list-group-item';
+        actionRow.className = 'list-group-item';
+        title.classList.add('active');
+        title.innerText = 'Завершёные';
+        listAction.className = 'list-inline';
+        firstAction.className = 'd-inline-block';
+        secondAction.className = 'd-inline-block';
+        firstAction.classList.add('w-25');
+        firstAction.classList.add('pl-3');
+        firstAction.innerText = 'Вернуть обратно';
+        secondAction.innerText = 'Название';
 
-    finishedHeader.appendChild(title);
-    listAction.appendChild(firstAction);
-    listAction.appendChild(secondAction);
-    actionRow.appendChild(listAction);
-    finishedHeader.appendChild(actionRow);
+        finishedHeader.appendChild(title);
+        listAction.appendChild(firstAction);
+        listAction.appendChild(secondAction);
+        actionRow.appendChild(listAction);
+        finishedHeader.appendChild(actionRow);
+
+        is_finishedHeader = true;
+    } else {
+        removeFinishedHeader();
+    }
+}
+
+function renderUnfinishedHeader() {
+    if (is_unfinishedHeader === false) {
+        let title, actionRow, listAction, firstAction, name, secondAction;
+
+        title = document.createElement('li');
+        actionRow = document.createElement('li');
+        firstAction = document.createElement('li');
+        secondAction = document.createElement('li');
+        name = document.createElement('li');
+        listAction = document.createElement('ul');
+        title.className = 'list-group-item';
+        actionRow.className = 'list-group-item';
+        title.classList.add('active');
+        name.className = 'd-inline-block';
+        listAction.className = 'list-inline';
+        firstAction.className = 'd-inline-block';
+        secondAction.className = 'd-inline-block';
+        firstAction.classList.add('w-25');
+        firstAction.classList.add('pl-3');
+        firstAction.innerText = 'Вернуть обратно';
+        secondAction.classList.add('w-25');
+        secondAction.classList.add('pl-3');
+        name.innerText = 'Название';
+        title.innerText = 'Активные';
+        secondAction.innerText = 'Название';
+
+        unfinishedHeader.appendChild(title);
+        listAction.appendChild(firstAction);
+        listAction.appendChild(name);
+        listAction.appendChild(secondAction);
+        actionRow.appendChild(listAction);
+        unfinishedHeader.appendChild(actionRow);
+
+        is_unfinishedHeader = true;
+    } else {
+        removeUnfinishedHeader();
+    }
 }
