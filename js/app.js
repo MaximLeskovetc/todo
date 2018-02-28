@@ -37,6 +37,8 @@ function renderTask(value, status) {
     actionBlock.className = 'd-inline-block';
     actionBlock.classList.add('float-right');
     actionBlock.classList.add('w-25');
+    actionBlock.classList.add('pl-3');
+    titleBlock.classList.add('w-50');
     label.innerText = value;
     input.type = 'checkbox';
     input.addEventListener('click', checkAction);
@@ -95,12 +97,12 @@ function saveAction(ev) {
     ev.preventDefault();
     let task = this.closest('.list-group-item');
     if (task.classList.contains('.edit')) {
-        let input = task.querySelector('input[name="task"]');
-        let taskValue = input.value;
+        let textarea = task.querySelector('textarea[name="task"]');
+        let taskValue = textarea.value;
         let label = document.createElement('label');
-        input.parentElement.appendChild(label);
+        textarea.parentElement.appendChild(label);
         label.innerHTML = taskValue;
-        input.remove();
+        textarea.remove();
         task.classList.remove('.edit');
     }
 }
@@ -111,11 +113,15 @@ function editAction(ev) {
     if (!task.classList.contains('.edit')) {
         let label = task.querySelector('label');
         let taskValue = label.innerText;
-        let input = document.createElement('input');
-        input.name = 'task';
-        input.type = 'text';
-        input.value = taskValue;
-        label.parentElement.appendChild(input);
+        let textarea = document.createElement('textarea');
+        let form = document.createElement('div');
+
+        form.className = 'form-group';
+        textarea.className = 'w-100';
+        textarea.name = 'task';
+        textarea.value = taskValue;
+        form.appendChild(textarea);
+        label.parentElement.appendChild(form);
         label.remove();
         task.classList.add('.edit');
     }
@@ -212,9 +218,10 @@ function renderUnfinishedHeader() {
         firstAction.innerText = 'Вернуть обратно';
         secondAction.classList.add('w-25');
         secondAction.classList.add('pl-3');
+        secondAction.classList.add('float-right');
         name.innerText = 'Название';
         title.innerText = 'Активные';
-        secondAction.innerText = 'Название';
+        secondAction.innerText = 'Действие';
 
         unfinishedHeader.appendChild(title);
         listAction.appendChild(firstAction);
