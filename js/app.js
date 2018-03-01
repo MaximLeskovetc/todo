@@ -59,7 +59,7 @@ function renderTask(value, status) {
     ul.appendChild(titleBlock);
     ul.appendChild(actionBlock);
     render.appendChild(ul);
-    status.appendChild(render);
+    status.insertBefore(render, status.firstChild);
 }
 
 function renderActionBtn(actionBlock) {
@@ -248,14 +248,14 @@ function save() {
 
     if (unfinished.childNodes.length !== 0) {
         for (let task of unfinished.childNodes) {
-            unfinishedTasks.push(task.querySelector('label').innerText);
+            unfinishedTasks.unshift(task.querySelector('label').innerText);
         }
 
     }
 
     if (finished.childNodes.length !== 0) {
         for (let task of finished.childNodes) {
-            finishedTasks.push(task.querySelector('label').innerText);
+            finishedTasks.unshift(task.querySelector('label').innerText);
         }
     }
 
