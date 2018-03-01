@@ -8,22 +8,23 @@ let is_finishedHeader = false;
 let is_unfinishedHeader = false;
 let data = load();
 
-addBtn.addEventListener('click', addedTask);
-
 function addedTask(ev) {
     ev.preventDefault();
     let text = addTask.querySelector('textarea');
     let value = text.value;
+
     if (value !== '') {
         renderUnfinishedHeader();
         renderTask(value, unfinished);
     }
+
     text.value = '';
     save();
 }
 
 function renderTask(value, status) {
     let checkedBlock, titleBlock, actionBlock, render, ul, input, label;
+
     ul = document.createElement('ul');
     input = document.createElement('input');
     label = document.createElement('label');
@@ -35,6 +36,7 @@ function renderTask(value, status) {
     render.className = 'list-group-item';
     checkedBlock.className = 'd-inline-block';
     checkedBlock.classList.add('w-25');
+    checkedBlock.classList.add('float-left');
     titleBlock.className = 'd-inline-block';
     actionBlock.className = 'd-inline-block';
     actionBlock.classList.add('float-right');
@@ -63,77 +65,78 @@ function renderTask(value, status) {
 }
 
 function renderActionBtn(actionBlock) {
-    let editBtn, saveBtn, deleteBtn, pencilIcon, floppyIcon, deleteIcon;
+    let editBtn, deleteBtn, pencilIcon, deleteIcon;
+
     editBtn = document.createElement('a');
-    saveBtn = document.createElement('a');
     deleteBtn = document.createElement('a');
     pencilIcon = document.createElement('i');
-    floppyIcon = document.createElement('i');
     deleteIcon = document.createElement('i');
     editBtn.href = '#';
-    saveBtn.href = '#';
     deleteBtn.href = '#';
     editBtn.className = 'edit';
-    saveBtn.className = 'save';
     deleteBtn.className = 'delete';
     editBtn.classList.add('mr-3');
-    saveBtn.classList.add('mr-3');
     deleteBtn.classList.add('mr-3');
     pencilIcon.className = ('fa');
-    floppyIcon.className = ('fa');
     deleteIcon.className = ('fa');
     pencilIcon.classList.add('fa-pencil');
-    floppyIcon.classList.add('fa-floppy-o');
     deleteIcon.classList.add('fa-trash-o');
     editBtn.appendChild(pencilIcon);
-    saveBtn.appendChild(floppyIcon);
     deleteBtn.appendChild(deleteIcon);
-    saveBtn.addEventListener('click', saveAction);
     editBtn.addEventListener('click', editAction);
     deleteBtn.addEventListener('click', deleteAction);
     actionBlock.appendChild(editBtn);
-    actionBlock.appendChild(saveBtn);
     actionBlock.appendChild(deleteBtn);
 }
 
 function saveAction(ev) {
     ev.preventDefault();
     let task = this.closest('.list-group-item');
-    if (task.classList.contains('.edit')) {
-        let textarea = task.querySelector('textarea[name="task"]');
-        let taskValue = textarea.value;
-        let label = document.createElement('label');
-        textarea.parentElement.appendChild(label);
-        label.innerHTML = taskValue;
+    let textarea = task.querySelector('textarea[name="task"]');
+    let taskValue = textarea.value;
+    let label = document.createElement('label');
+
+    textarea.parentElement.appendChild(label);
+    label.innerHTML = taskValue;
+
+    if (taskValue !== '') {
         textarea.remove();
-        task.classList.remove('.edit');
+
+        this.firstChild.classList.add('fa-pencil');
+        this.firstChild.classList.remove('fa-floppy-o');
+        this.addEventListener('click', editAction);
+        this.removeEventListener('click', saveAction);
+
+        save();
     }
-    save();
 }
 
 function editAction(ev) {
     ev.preventDefault();
     let task = this.closest('.list-group-item');
-    if (!task.classList.contains('.edit')) {
-        let label = task.querySelector('label');
-        let taskValue = label.innerText;
-        let textarea = document.createElement('textarea');
-        let form = document.createElement('div');
+    let label = task.querySelector('label');
+    let taskValue = label.innerText;
+    let textarea = document.createElement('textarea');
+    let form = document.createElement('div');
 
-        form.className = 'form-group';
-        textarea.className = 'w-100';
-        textarea.name = 'task';
-        textarea.value = taskValue;
-        form.appendChild(textarea);
-        label.parentElement.appendChild(form);
-        label.remove();
-        task.classList.add('.edit');
-    }
+    form.className = 'form-group';
+    textarea.className = 'w-100';
+    textarea.name = 'task';
+    textarea.value = taskValue;
+    form.appendChild(textarea);
+    label.parentElement.appendChild(form);
+    label.remove();
+
+    this.firstChild.classList.remove('fa-pencil');
+    this.firstChild.classList.add('fa-floppy-o');
+    this.removeEventListener('click', editAction);
+    this.addEventListener('click', saveAction);
 }
 
 function deleteAction(ev) {
     ev.preventDefault();
     let task = this.closest('.list-group-item');
+
     task.remove();
     removeUnfinishedHeader();
     save();
@@ -143,15 +146,16 @@ function checkAction(ev) {
     let task = this.closest('.list-group-item');
     let label = task.querySelector('label');
     let taskValue = label.innerText;
-    task.remove();
-    renderFinishedHeader();
-    renderUnfinishedHeader();
 
     if (ev.target.checked) {
         renderTask(taskValue, finished);
     } else {
         renderTask(taskValue, unfinished);
     }
+
+    task.remove();
+    renderFinishedHeader();
+    renderUnfinishedHeader();
     save();
 }
 
@@ -221,7 +225,7 @@ function renderUnfinishedHeader() {
         secondAction.className = 'd-inline-block';
         firstAction.classList.add('w-25');
         firstAction.classList.add('pl-3');
-        firstAction.innerText = 'Вернуть обратно';
+        firstAction.innerText = 'Завершить';
         secondAction.classList.add('w-25');
         secondAction.classList.add('pl-3');
         secondAction.classList.add('float-right');
@@ -246,14 +250,10 @@ function save() {
     let finishedTasks = [];
     let unfinishedTasks = [];
 
-    if (unfinished.childNodes.length !== 0) {
+    if (unfinished.childNodes.length !== 0 || finished.childNodes.length !== 0) {
         for (let task of unfinished.childNodes) {
             unfinishedTasks.unshift(task.querySelector('label').innerText);
         }
-
-    }
-
-    if (finished.childNodes.length !== 0) {
         for (let task of finished.childNodes) {
             finishedTasks.unshift(task.querySelector('label').innerText);
         }
@@ -268,6 +268,7 @@ function load() {
 }
 
 function init() {
+    addBtn.addEventListener('click', addedTask);
 
     for (let i = 0; i < data.finished.length; i++) {
         renderFinishedHeader();
