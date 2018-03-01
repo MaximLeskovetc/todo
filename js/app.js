@@ -6,6 +6,7 @@ const finishedHeader = document.querySelector('.finished-header');
 const unfinishedHeader = document.querySelector('.unfinished-header');
 let is_finishedHeader = false;
 let is_unfinishedHeader = false;
+let data = load();
 
 addBtn.addEventListener('click', addedTask);
 
@@ -18,6 +19,7 @@ function addedTask(ev) {
         renderTask(value, unfinished);
     }
     text.value = '';
+    save();
 }
 
 function renderTask(value, status) {
@@ -106,6 +108,7 @@ function saveAction(ev) {
         textarea.remove();
         task.classList.remove('.edit');
     }
+    save();
 }
 
 function editAction(ev) {
@@ -133,6 +136,7 @@ function deleteAction(ev) {
     let task = this.closest('.list-group-item');
     task.remove();
     removeUnfinishedHeader();
+    save();
 }
 
 function checkAction(ev) {
@@ -148,6 +152,7 @@ function checkAction(ev) {
     } else {
         renderTask(taskValue, unfinished);
     }
+    save();
 }
 
 function removeFinishedHeader() {
@@ -236,3 +241,43 @@ function renderUnfinishedHeader() {
         removeUnfinishedHeader();
     }
 }
+
+function save() {
+    let finishedTasks = [];
+    let unfinishedTasks = [];
+
+    if (unfinished.childNodes.length !== 0) {
+        for (let task of unfinished.childNodes) {
+            unfinishedTasks.push(task.querySelector('label').innerText);
+        }
+
+    }
+
+    if (finished.childNodes.length !== 0) {
+        for (let task of finished.childNodes) {
+            finishedTasks.push(task.querySelector('label').innerText);
+        }
+    }
+
+    localStorage.removeItem('data');
+    localStorage.setItem('data', JSON.stringify({finished: finishedTasks, unfinished: unfinishedTasks}));
+}
+
+function load() {
+    return JSON.parse(localStorage.getItem('data'));
+}
+
+function init() {
+
+    for (let i = 0; i < data.finished.length; i++) {
+        renderFinishedHeader();
+        renderTask(data.finished[i], finished)
+    }
+
+    for (let i = 0; i < data.unfinished.length; i++) {
+        renderUnfinishedHeader();
+        renderTask(data.unfinished[i], unfinished)
+    }
+}
+
+init();
