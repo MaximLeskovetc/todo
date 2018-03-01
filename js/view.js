@@ -1,7 +1,8 @@
 function renderMain() {
-    let mainContainer, mainRow, mainContent, mainUnfinishedHeader,
+    let mainContainer, mainRow, mainContent, mainUnfinishedHeader, mainApp,
         mainUnfinished, mainFinishedHeader, mainFinished, mainAddTaskBlock;
 
+    mainApp = document.querySelector('app');
     mainContainer = document.createElement('div');
     mainRow = document.createElement('div');
     mainContent = document.createElement('ul');
@@ -27,7 +28,7 @@ function renderMain() {
     mainContent.appendChild(mainFinished);
     mainRow.appendChild(mainContent);
     mainContainer.appendChild(mainRow);
-    document.body.appendChild(mainContainer);
+    mainApp.appendChild(mainContainer);
 
     finished = mainFinished;
     unfinished = mainUnfinished;
