@@ -2,7 +2,7 @@ function renderMain() {
     let mainContainer, mainRow, mainContent, mainUnfinishedHeader, mainApp,
         mainUnfinished, mainFinishedHeader, mainFinished, mainAddTaskBlock;
 
-    mainApp = document.querySelector('app');
+    mainApp = document.querySelector('.app');
     mainContainer = document.createElement('div');
     mainRow = document.createElement('div');
     mainContent = document.createElement('ul');
