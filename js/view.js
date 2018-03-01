@@ -1,6 +1,8 @@
 function renderMain() {
-    let mainContainer, mainRow, mainContent, mainUnfinishedHeader, mainApp,
-        mainUnfinished, mainFinishedHeader, mainFinished, mainAddTaskBlock;
+    let mainContainer, mainRow, mainContent,
+        mainUnfinishedHeader, mainApp, mainSearch,
+        mainUnfinished, mainFinishedHeader,
+        mainFinished, mainAddTaskBlock;
 
     mainApp = document.querySelector('.app');
     mainContainer = document.createElement('div');
@@ -20,7 +22,9 @@ function renderMain() {
     mainContent.classList.add('mt-3');
     mainContent.classList.add('w-100');
     mainAddTaskBlock = renderAddTaskBlock();
+    mainSearch = renderSearch();
 
+    mainContent.appendChild(mainSearch);
     mainContent.appendChild(mainAddTaskBlock);
     mainContent.appendChild(mainUnfinishedHeader);
     mainContent.appendChild(mainUnfinished);
@@ -30,6 +34,8 @@ function renderMain() {
     mainContainer.appendChild(mainRow);
     mainApp.appendChild(mainContainer);
 
+    app = mainApp;
+    searchEl = mainSearch;
     finished = mainFinished;
     unfinished = mainUnfinished;
     finishedHeader = mainFinishedHeader;
@@ -44,8 +50,8 @@ function renderAddTaskBlock() {
     content = document.createElement('li');
     textarea = document.createElement('textarea');
     addBtn = document.createElement('a');
-    addTask.className = 'task';
     addTask.classList.add('.add-task');
+    addTask.classList.add('mb-3');
     addBtn.classList.add('btn');
     addBtn.classList.add('btn-primary');
     addBtn.classList.add('float-right');
@@ -65,9 +71,48 @@ function renderAddTaskBlock() {
     content.appendChild(addBtn);
     addTask.appendChild(title);
     addTask.appendChild(content);
-    addTask.classList.add('mb-3');
 
     return addTask
+}
+
+
+function renderSearch() {
+    let searchElement, title, content, input, searchBtn, error;
+
+    searchElement = document.createElement('ul');
+    content = document.createElement('li');
+    input = document.createElement('input');
+    searchBtn = document.createElement('a');
+    error = document.createElement('span');
+    searchBtn.href = '#';
+    searchBtn.innerText = 'Поиск';
+    searchBtn.classList.add('btn');
+    searchBtn.classList.add('btn-primary');
+    searchBtn.classList.add('float-right');
+    searchBtn.classList.add('mt-1');
+    error.className = 'float-left';
+    input.className = 'w-100';
+    content.className = 'list-group-item';
+    content.classList.add('pb-5');
+    searchElement.className = 'search';
+    searchElement.classList.add('mb-3');
+    title = document.createElement('li');
+    title.className = 'list-group-item';
+    title.classList.add('active');
+    title.innerText = 'Поиск';
+    searchBtn.addEventListener('click', search);
+
+    if (data.searchText !== undefined) {
+        input.value = data.searchText;
+    }
+
+    content.appendChild(input);
+    content.appendChild(searchBtn);
+    content.appendChild(error);
+    searchElement.appendChild(title);
+    searchElement.appendChild(content);
+
+    return searchElement;
 }
 
 function renderActionBtn(actionBlock) {

@@ -116,3 +116,35 @@ function checkAction(ev) {
     renderUnfinishedHeader();
     save();
 }
+
+function search(ev) {
+    ev.preventDefault();
+
+    let input, searchText;
+    let finishedTasks = [];
+    let unfinishedTasks = [];
+    let list = load();
+
+    input = searchEl.querySelector('input');
+    searchText = input.value;
+
+    for (let i = 0; i < list.finished.length; i++) {
+        if (list.finished[i].indexOf(searchText) !== -1) {
+            finishedTasks.unshift(list.finished[i]);
+        }
+    }
+
+    for (let i = 0; i < list.unfinished.length; i++) {
+        if (list.unfinished[i].indexOf(searchText) !== -1) {
+            unfinishedTasks.unshift(list.unfinished[i]);
+        }
+    }
+
+    data = {finished: finishedTasks, unfinished: unfinishedTasks, searchText: searchText};
+    if (data.finished.length !== 0 || data.unfinished.length !== 0) {
+        app.innerHTML = '';
+        init();
+    } else {
+        searchEl.querySelector('span').innerText = 'Ничего не найдено';
+    }
+}
