@@ -1,26 +1,15 @@
-function renderActionBtn(actionBlock) {
-    let editBtn, deleteBtn, pencilIcon, deleteIcon;
+function addedTask(ev) {
+    ev.preventDefault();
+    let text = this.parentElement.querySelector('textarea');
+    let value = text.value;
 
-    editBtn = document.createElement('a');
-    deleteBtn = document.createElement('a');
-    pencilIcon = document.createElement('i');
-    deleteIcon = document.createElement('i');
-    editBtn.href = '#';
-    deleteBtn.href = '#';
-    editBtn.className = 'edit';
-    deleteBtn.className = 'delete';
-    editBtn.classList.add('mr-3');
-    deleteBtn.classList.add('mr-3');
-    pencilIcon.className = ('fa');
-    deleteIcon.className = ('fa');
-    pencilIcon.classList.add('fa-pencil');
-    deleteIcon.classList.add('fa-trash-o');
-    editBtn.appendChild(pencilIcon);
-    deleteBtn.appendChild(deleteIcon);
-    editBtn.addEventListener('click', editAction);
-    deleteBtn.addEventListener('click', deleteAction);
-    actionBlock.appendChild(editBtn);
-    actionBlock.appendChild(deleteBtn);
+    if (value !== '') {
+        renderUnfinishedHeader();
+        renderTask(value, unfinished);
+    }
+
+    text.value = '';
+    save();
 }
 
 function saveAction(ev) {

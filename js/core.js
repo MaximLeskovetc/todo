@@ -1,18 +1,7 @@
 let data = load();
-
-function addedTask(ev) {
-    ev.preventDefault();
-    let text = addTask.querySelector('textarea');
-    let value = text.value;
-
-    if (value !== '') {
-        renderUnfinishedHeader();
-        renderTask(value, unfinished);
-    }
-
-    text.value = '';
-    save();
-}
+let finished, unfinished, finishedHeader, unfinishedHeader;
+let is_finishedHeader = false;
+let is_unfinishedHeader = false;
 
 function save() {
     let finishedTasks = [];
@@ -36,7 +25,7 @@ function load() {
 }
 
 function init() {
-    addBtn.addEventListener('click', addedTask);
+    renderMain();
 
     for (let i = 0; i < data.finished.length; i++) {
         renderFinishedHeader();

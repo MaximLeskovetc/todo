@@ -1,13 +1,98 @@
-const finished = document.querySelector('.finished');
-const unfinished = document.querySelector('.unfinished');
-// const finishedHeader = document.querySelector('.finished-header');
-// const unfinishedHeader = document.querySelector('.unfinished-header');
+function renderMain() {
+    let mainContainer, mainRow, mainContent, mainUnfinishedHeader,
+        mainUnfinished, mainFinishedHeader, mainFinished, mainAddTaskBlock;
 
-const addTask = document.querySelector('.add-task');
-const addBtn = addTask.querySelector('a');
+    mainContainer = document.createElement('div');
+    mainRow = document.createElement('div');
+    mainContent = document.createElement('ul');
+    mainUnfinishedHeader = document.createElement('ul');
+    mainUnfinished = document.createElement('ul');
+    mainFinishedHeader = document.createElement('ul');
+    mainFinished = document.createElement('ul');
+    mainContainer.className = 'container';
+    mainRow.className = 'row';
+    mainContent.className = 'list-group';
+    mainUnfinishedHeader.className = 'unfinished-header';
+    mainUnfinished.className = 'unfinished';
+    mainFinishedHeader.className = 'finished-header';
+    mainFinished.className = 'finished';
+    mainContent.classList.add('mt-3');
+    mainContent.classList.add('w-100');
+    mainAddTaskBlock = renderAddTaskBlock();
 
-let is_finishedHeader = false;
-let is_unfinishedHeader = false;
+    mainContent.appendChild(mainAddTaskBlock);
+    mainContent.appendChild(mainUnfinishedHeader);
+    mainContent.appendChild(mainUnfinished);
+    mainContent.appendChild(mainFinishedHeader);
+    mainContent.appendChild(mainFinished);
+    mainRow.appendChild(mainContent);
+    mainContainer.appendChild(mainRow);
+    document.body.appendChild(mainContainer);
+
+    finished = mainFinished;
+    unfinished = mainUnfinished;
+    finishedHeader = mainFinishedHeader;
+    unfinishedHeader = mainUnfinishedHeader;
+}
+
+function renderAddTaskBlock() {
+    let title, content, textarea, addBtn, addTask;
+
+    addTask = document.createElement('ul');
+    title = document.createElement('li');
+    content = document.createElement('li');
+    textarea = document.createElement('textarea');
+    addBtn = document.createElement('a');
+    addTask.className = 'task';
+    addTask.classList.add('.add-task');
+    addBtn.classList.add('btn');
+    addBtn.classList.add('btn-primary');
+    addBtn.classList.add('float-right');
+    addBtn.classList.add('mt-1');
+    addBtn.href = '#';
+    addBtn.innerText = 'Добавить';
+    title.className = 'list-group-item';
+    content.className = 'list-group-item';
+    textarea.className = 'w-100';
+    textarea.placeholder = 'Добавить новое задание';
+    title.classList.add('active');
+    content.classList.add('pb-5');
+    title.innerText = 'Добавить новое задание';
+    addBtn.addEventListener('click', addedTask);
+
+    content.appendChild(textarea);
+    content.appendChild(addBtn);
+    addTask.appendChild(title);
+    addTask.appendChild(content);
+    addTask.classList.add('mb-3');
+
+    return addTask
+}
+
+function renderActionBtn(actionBlock) {
+    let editBtn, deleteBtn, pencilIcon, deleteIcon;
+
+    editBtn = document.createElement('a');
+    deleteBtn = document.createElement('a');
+    pencilIcon = document.createElement('i');
+    deleteIcon = document.createElement('i');
+    editBtn.href = '#';
+    deleteBtn.href = '#';
+    editBtn.className = 'edit';
+    deleteBtn.className = 'delete';
+    editBtn.classList.add('mr-3');
+    deleteBtn.classList.add('mr-3');
+    pencilIcon.className = ('fa');
+    deleteIcon.className = ('fa');
+    pencilIcon.classList.add('fa-pencil');
+    deleteIcon.classList.add('fa-trash-o');
+    editBtn.appendChild(pencilIcon);
+    deleteBtn.appendChild(deleteIcon);
+    editBtn.addEventListener('click', editAction);
+    deleteBtn.addEventListener('click', deleteAction);
+    actionBlock.appendChild(editBtn);
+    actionBlock.appendChild(deleteBtn);
+}
 
 function renderTask(value, status) {
     let checkedBlock, titleBlock, actionBlock, render, ul, input, label;
